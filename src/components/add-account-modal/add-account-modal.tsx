@@ -6,8 +6,6 @@ import { NETWORK } from "@/config";
 import { NearContext } from "@/context/near-context";
 import { AccountsContext } from "@/context/accounts-reducer-context";
 
-Modal.setAppElement(document.body);
-
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(255, 255, 255, 0.4)",
