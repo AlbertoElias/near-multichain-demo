@@ -7,12 +7,15 @@
 
 :root {
   --max-width: 980px;
-  --border-radius: 12px;
+  --border-radius: 8px;
+  --card-border-radius: 16px;
   --black: #101010;
   --white: #f4f4f4;
   --grey: #212121;
   --green: #45ae6b;
   --background: #101010;
+  --primary1: 238, 179, 122;
+  --primary2: 244, 168, 55;
 }
 
 * {
@@ -29,7 +32,8 @@ body {
 
 body {
   font-family: 'Heming', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
-  letter-spacing: 0.08rem;
+  letter-spacing: 0.1rem;
+  font-size: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,7 +47,7 @@ a {
 
 button {
   font-size: 1rem;
-  background-image: linear-gradient(to right, #eeb37a 0%, #f4a837 100%);
+  background-image: linear-gradient(to right, rgba(var(--primary1), 1) 0%, rgba(var(--primary2), 1) 100%);
   padding: 1rem;
   border-radius: var(--border-radius);
   cursor: pointer;

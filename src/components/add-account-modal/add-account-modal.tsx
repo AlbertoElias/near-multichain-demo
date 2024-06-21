@@ -18,7 +18,7 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     padding: "2rem",
-    borderRadius: "var(--border-radius)",
+    borderRadius: "var(--card-border-radius)",
     minWidth: "400px",
     boxShadow: "2px 2px 0 var(--black)",
     color: "var(--black)",

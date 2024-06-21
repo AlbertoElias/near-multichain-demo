@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState, useCallback } from "react";
+import { useEffect, useContext, useState, useCallback, useMemo } from "react";
 import { utils } from "near-api-js";
 import Image from "next/image";
 
@@ -29,6 +29,7 @@ export const AccountView = ({
   const { wallet, ethereum, bitcoin } = useContext(NearContext);
   const [balance, setBalance] = useState("");
   const [usd, setUsd] = useState("");
+  const [tokenUsd, setTokenUsd] = useState("0");
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -65,6 +66,25 @@ export const AccountView = ({
     }
   }, [account, wallet, ethereum, bitcoin]);
 
+  const fetchTokenToUsd = useCallback(async () => {
+    const apiUrl = `${FiatConvertAPI}${getToken(account.network)}/usd?amount=1`;
+    const ratio = await fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          return data.USD;
+        } else {
+          return "0";
+        }
+      })
+      .catch(() => "0");
+    setTokenUsd(ratio);
+  }, [account.network]);
+
+  useEffect(() => {
+    fetchTokenToUsd();
+  }, [fetchTokenToUsd]);
+
   useEffect(() => {
     updateBalance(true);
     const interval = setInterval(updateBalance, 5000);
@@ -73,31 +93,23 @@ export const AccountView = ({
 
   useEffect(() => {
     if (balance === "") return;
-    const apiUrl = `${FiatConvertAPI}${getToken(account.network)}/usd?amount=${balance}`;
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "success") {
-          const formattedUsd = parseFloat(data.USD).toFixed(2);
-          console.log(formattedUsd)
-          setUsd(formattedUsd)
-        } else {
-          setUsd("0");
-        }
-        onBalanceUpdate(account.id, data.USD);
-      })
-      .catch(() => setUsd("0"));
-  }, [balance]);
+    const tokenToUsd = parseFloat(balance) * parseFloat(tokenUsd);
+    const formattedUsd = tokenToUsd.toFixed(2);
+    setUsd(formattedUsd)
+    onBalanceUpdate(account.id, tokenToUsd.toString());
+  }, [balance, tokenUsd]);
 
   function copyAddress() {
     navigator.clipboard.writeText(account.id);
     setIsToastVisible(true);
-    setTimeout(() => setIsToastVisible(false), 2000);
+    setTimeout(() => setIsToastVisible(false), 1000);
   }
 
   return (
     <div className={styles.account} onClick={copyAddress}>
-      <Image className={styles.logo} src={`/${account.network}.svg`} alt={account.network} width="32" height="32" />
+      <div className={styles.accountIconWrapper}>
+        <Image className={styles.logo} src={`/${account.network}.svg`} alt={account.network} width="24" height="24" />
+      </div>
       <div className={styles.accountInfo}>
         <p className={styles.accountName}>
           <span className={styles.accountNamePrimary}>
