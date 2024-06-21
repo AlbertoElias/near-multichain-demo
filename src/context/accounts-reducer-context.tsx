@@ -5,6 +5,7 @@ export interface Account {
   network: string;
   id: string;
   name?: string;
+  publicKey?: string;
 }
 
 interface AccountsAction {

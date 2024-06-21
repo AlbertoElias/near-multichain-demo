@@ -26,9 +26,12 @@ export const Navigation = () => {
   return (
     <nav className={`${styles.nav}`}>
       <Link href="/" passHref legacyBehavior>
-        <Image priority src={NearLogo} alt="NEAR" width="32" height="32" />
+        <div className={styles.header}>
+          <Image priority src={NearLogo} alt="NEAR" width="32" height="32" />
+          <h1>Multichain Hub</h1>
+        </div>
       </Link>
-      <button className="secondary" onClick={action}>{label}</button>
+      <button className={`secondary ${styles.logoutButton}`} onClick={action}>{label}</button>
     </nav>
   );
 };

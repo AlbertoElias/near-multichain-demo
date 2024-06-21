@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
-import { AccountView } from "@/components/account/account";
+import Link from "next/link";
+import { AccountView, BalanceUpdate } from "@/components/account/account";
 import AddAccountModal from "@/components/add-account-modal/add-account-modal";
 import styles from "./accounts-container.module.css";
 import { AccountsContext } from "@/context/accounts-reducer-context";
+import Container from "../container/container";
 
 interface Balances {
   [id: string]: string;
@@ -13,17 +15,16 @@ export default function AccountsContainer() {
   const [addAccountModalIsOpen, setAddAccountModalIsOpen] = useState(false);
   const [balances, setBalances] = useState<Balances>({});
 
-  const handleBalanceUpdate = (id: string, balance: string) => {
-    setBalances((prev) => ({ ...prev, [id]: balance }));
+  const handleBalanceUpdate = (id: string, balance: BalanceUpdate) => {
+    setBalances((prev) => ({ ...prev, [id]: balance.usd }));
   };
-  console.log(balances)
 
   const totalBalance = Object.values(balances)
     .reduce((acc, balance) => acc + parseFloat(balance || "0"), 0)
     .toFixed(2);
 
   return (
-    <div className={styles.accountsContainer}>
+    <Container>
       <header className={styles.header}>
         <h2 className={styles.title}>
           <span className={styles.titleLabel}>Total Balance: </span>
@@ -36,9 +37,11 @@ export default function AccountsContainer() {
       </header>
       <div className={styles.accounts}>
         {state?.map((account) => (
-          <AccountView key={account.id} account={account} onBalanceUpdate={handleBalanceUpdate} />
+          <Link key={account.id} className={styles.accountLink} href={`/accounts/${account.id}`}>
+            <AccountView account={account} onBalanceUpdate={handleBalanceUpdate} />
+          </Link>
         ))}
       </div>
-    </div>
+    </Container>
   );
 }

@@ -2,6 +2,7 @@ import axios from "axios";
 import * as ethers from "ethers";
 import * as bitcoin from "bitcoinjs-lib";
 import { deriveChildPublicKey, najPublicKeyStrToUncompressedHexPoint, uncompressedHexPointToBtcAddress } from "@/lib/kdf";
+import { TokenInfo } from "@/config";
 
 export class Bitcoin {
   chain_rpc: string;
@@ -29,6 +30,14 @@ export class Bitcoin {
     );
     const balance = response.data.reduce((acc: any, utxo: { value: any; }) => acc + utxo.value, 0);
     return balance;
+  }
+
+  satoshiToBTC(satoshi: number) {
+    return satoshi / (10 ** TokenInfo.bitcoin.decimals);
+  }
+
+  btcToSatoshi(btc: number) {
+    return Math.floor(btc * (10 ** TokenInfo.bitcoin.decimals));
   }
 
   async createPayload(sender: any, receiver: any, satoshis: any) {

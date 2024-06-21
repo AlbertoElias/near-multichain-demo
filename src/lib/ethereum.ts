@@ -28,8 +28,7 @@ export class Ethereum {
 
   async getBalance(accountId: string) {
     const balance = await this.web3.eth.getBalance(accountId)
-    const ONE_ETH = 1000000000000000000n;
-    return Number(balance * 100n / ONE_ETH) / 100;
+    return balance;
   }
 
   async createPayload(sender: string, receiver: string, amount: number) {

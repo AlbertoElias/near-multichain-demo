@@ -47,6 +47,10 @@ Now you should have a wallet set up on the testnet with 10 NEAR. You can also ge
 
 Based on the [docs](https://docs.near.org/build/chain-abstraction/chain-signatures), we are using helper functions from [near-multichain](https://github.com/near-examples/near-multichain/tree/main).
 
+## Things to Improve
+
+- Sending NEAR works, but the library stops tracking the tx after the wallet opens up.
+
 ## Learn More about NEAR and Chain Signatures
 
 To learn more about NEAR, take a look at the following resources:

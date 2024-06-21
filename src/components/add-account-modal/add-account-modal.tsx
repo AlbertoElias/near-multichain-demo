@@ -40,7 +40,7 @@ export default function AddAccountModal({
   async function addAccount(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const { address } = network === "ethereum"
+      const { address, publicKey } = network === "ethereum"
         ? await ethereum.deriveAddress(signedAccountId, accountName)
         : await bitcoin.deriveAddress(signedAccountId, accountName);
 
@@ -49,7 +49,8 @@ export default function AddAccountModal({
         account: {
           network,
           id: address,
-          name: accountName
+          name: accountName,
+          publicKey: publicKey.toString("hex"),
         }
       });
       onRequestClose();

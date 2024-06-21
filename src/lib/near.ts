@@ -1,5 +1,5 @@
 // near api js
-import { providers } from "near-api-js";
+import { providers, utils } from "near-api-js";
 
 // wallet selector
 import { distinctUntilChanged, map } from "rxjs";
@@ -161,6 +161,29 @@ export class Wallet {
       throw new Error("Transaction outcome is undefined.");
     }
   };
+
+  send = async (receiverId: string, amount: string) => {
+    if (!this.selector) throw new Error("Wallet Selector not initialized");
+    // Sign a transaction with the "Transfer" action
+    const selectedWallet = await this.selector.wallet();
+    const outcome = await selectedWallet.signAndSendTransaction({
+      receiverId,
+      actions: [
+        {
+          type: "Transfer",
+          params: {
+            deposit: amount,
+          }
+        },
+      ],
+    });
+
+    if (outcome) {
+      return providers.getTransactionLastResult(outcome);
+    } else {
+      throw new Error("Transaction outcome is undefined.");
+    }
+  }
 
   /**
    * Makes a call to a contract

@@ -1,0 +1,10 @@
+.container {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--black);
+  box-shadow: 2px 2px 0 var(--black);
+  border-radius: var(--card-border-radius);
+  padding: 2rem;
+}
