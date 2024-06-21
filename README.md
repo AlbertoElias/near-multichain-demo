@@ -47,9 +47,9 @@ Now you should have a wallet set up on the testnet with 10 NEAR. You can also ge
 
 Based on the [docs](https://docs.near.org/build/chain-abstraction/chain-signatures), we are using helper functions from [near-multichain](https://github.com/near-examples/near-multichain/tree/main).
 
-## Things to Improve
+## Issues
 
-- Sending NEAR works, but the library stops tracking the tx after the wallet opens up.
+- Relaying Bitcoin and Ethereum transactions is not working. Getting CORS errors both in my app and in the [near multichain example](https://github.com/near-examples/near-multichain).
 
 ## Learn More about NEAR and Chain Signatures
 

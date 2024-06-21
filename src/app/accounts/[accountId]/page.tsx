@@ -35,12 +35,7 @@ export default function Page({
   const [txState, setTxState] = useState("");
   const [error, setError] = useState("");
   const [successUrl, setSuccessUrl] = useState("");
-
-  const token = useMemo(() => {
-    if (account) {
-      return TokenInfo[account.network]
-    }
-  }, [account]);
+  const token = useMemo(() => account ? TokenInfo[account.network] : null, [account])
 
   const copyAddress = useCallback(() => {
     if (account) {
@@ -71,20 +66,17 @@ export default function Page({
     setInputValue(value);
     setInputAmount(newAmount);
 
-    const isNewAmountExceedingFunds = newAmount > BigInt(balance);
-    isNewAmountExceedingFunds ? setFundsExceeded(true) : setFundsExceeded(false);
-    const isAmountNegative = newAmount < BigInt(0);
-    isAmountNegative ? setInvalidAmount(true) : setInvalidAmount(false);
+    setFundsExceeded(newAmount > BigInt(balance))
+    setInvalidAmount(newAmount < BigInt(0))
   }, [account, token, balance]);
 
   const sendTx = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!account) return;
-    if (fundsExceeded || invalidAmount) return;
+    if (!account || fundsExceeded || invalidAmount) return
     setError("");
     setSuccessUrl("");
-
     setIsLoading(true);
+
     try {
       switch (account.network) {
         case "near":
@@ -120,11 +112,9 @@ export default function Page({
   }, [account, inputAmount, toAddress, fundsExceeded, invalidAmount]);
 
   const relayTransaction = useCallback(async () => {
-    if (!account) return;
-    if (txState !== "relay") return;
-    if (!signedTransaction) return;
-
+    if (!account || txState !== "relay" || !signedTransaction) return
     setIsLoading(true);
+  
     try {
       let explorerUrl = "";
       switch (account.network) {
@@ -184,11 +174,13 @@ export default function Page({
             </button>
           }
         </form>
+      
         {txState === "relay" &&
-          <button className={`${styles.button} ${isLoading && "loading"}`} onClick={relayTransaction}>
+          <button className={`${styles.button} ${isLoading && "loading"}`} onClick={relayTransaction} disabled={isLoading}>
             {!isLoading && <span className={styles.buttonText}>Relay Transaction To Complete</span>}
             <span className="spinner"></span>
           </button>}
+        
         <p className={`${styles.toast} ${toastText.length ? styles.toastVisible : ""}`}>{toastText}</p>
         {error.length > 0 && <p className={styles.error}>{error}</p>}
         {successUrl.length > 0 && <a href={successUrl} className={styles.successLink}>Success! View Transaction</a>}

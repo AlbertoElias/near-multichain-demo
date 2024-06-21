@@ -37,6 +37,10 @@
   align-self: center;
 }
 
+.button:disabled {
+  cursor: not-allowed;
+}
+
 .toast {
   opacity: 0;
   visibility: hidden;
