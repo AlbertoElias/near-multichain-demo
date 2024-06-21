@@ -1,0 +1,42 @@
+.title {
+  margin-bottom: 1rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.label {
+  flex: 1;
+}
+
+.inputWrapper {
+  flex: 1.5;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid #333;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.button {
+  flex: 1;
+}
+
+.cancelButton {
+  background: transparent;
+  border: 1px solid var(--black);
+  color: var(--black);
+}
